@@ -23,7 +23,7 @@ public class TokenService implements ITokenService{
 		if(obj!=null)
 		{
 			tokenStatus = obj.getTokenStatus();
-			if(tokenStatus.equals("active") && obj.getServiceType().equals("deposit")) {
+			if(tokenStatus.equals("active")) {
 				int val = tokenDAO.updateStatus("active", String.valueOf(tokenNo));
 				if(val>0)
 				{
@@ -60,5 +60,10 @@ public class TokenService implements ITokenService{
 	@Override
 	public List<Token> getAllTokens(){
 		return tokenDAO.getAllTokens();
+	}
+	
+	@Override
+	public void generateToken(int acctNo,String serviceType){
+		 tokenDAO.generateToken(acctNo, serviceType);
 	}
 }

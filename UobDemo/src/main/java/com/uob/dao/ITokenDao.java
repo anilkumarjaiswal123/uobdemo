@@ -12,4 +12,5 @@ public interface ITokenDao {
     List<Token> getCurrentActiveToken();
     List<Token> getCompletedToken();
     public void updateToken(Token token);
+    void generateToken(int acctNo,String serviceTYpe);
 }

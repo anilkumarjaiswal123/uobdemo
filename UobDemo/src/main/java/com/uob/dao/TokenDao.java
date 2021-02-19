@@ -13,8 +13,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.uob.Entity.Customer;
 import com.uob.Entity.Token;
@@ -65,21 +68,21 @@ public class TokenDao implements ITokenDao{
 	
 	public int updateStatusNextToken(String status,String tokenNumber) {
 		int val = entityManager
-	     .createQuery("update Token set tokenStatus = \'active\' where tokenNumber="+tokenNumber+" and serviceType=\'deposit\'" )
+	     .createQuery("update Token set tokenStatus = \'active\' where tokenNumber="+tokenNumber )
 	     .executeUpdate();
 		return val;
 	}
 	@SuppressWarnings("unchecked")
 	public List<Token> getCurrentActiveToken() {
 		List<Token> activeTokenList = entityManager
-	     .createQuery("FROM Token as token where token.tokenStatus = \'active\' and token.serviceType=\'deposit\'" )
+	     .createQuery("FROM Token as token where token.tokenStatus = \'active\'" )
 	     .getResultList();
 		return activeTokenList;
 	}	
 	@SuppressWarnings("unchecked")
 	public List<Token> getCompletedToken() {
 		List<Token> activeTokenList = entityManager
-	     .createQuery("FROM Token as token where token.tokenStatus = \'complete\' and token.serviceType=\'deposit\'" )
+	     .createQuery("FROM Token as token where token.tokenStatus = \'complete\'" )
 	     .getResultList();
 		return activeTokenList;
 	}	
@@ -89,16 +92,28 @@ public class TokenDao implements ITokenDao{
 	public void updateToken(Token token) {
 		Token tokens = getTokenByTokenNo(token.getTokenNumber());
 		tokens.setFeedback(token.getFeedback());
-		//artcl.setCategory(article.getCategory());
+		
 		entityManager.flush();
 	}
 	
 	//@SuppressWarnings("unchecked")
 	public Token getTokenByTokenNo(String tokenNumber) {
 		Token token = (Token)entityManager
-	     .createQuery("FROM Token as token where token.tokenNumber ="+tokenNumber+"  and token.serviceType=\'deposit\'" )
+	     .createQuery("FROM Token as token where token.tokenNumber ="+tokenNumber )
 	     .getResultList().get(0);
 		return token;
 	}	
+	
+	
+	public void generateToken(int acctNo,String serviceTYpe) {
+		String query = "insert into tokens(token_acctno,token_status,token_servicetype,token_review) values(?,?,?,?)";
+		entityManager.createNativeQuery(query)
+		   .setParameter(1, acctNo)
+		   .setParameter(2, "pending")
+		   .setParameter(3, serviceTYpe)
+		   .setParameter(4, null)
+		   
+		   .executeUpdate();
+	 }
 	
 }

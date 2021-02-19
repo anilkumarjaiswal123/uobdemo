@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="customer_token")
+@Table(name="tokens")
 /*
  * @Data
  * 
@@ -26,35 +26,26 @@ public class Token implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="token_id")
-    private int tokenId;  
+	
 	
 	@Column(name="token_no")
     private String tokenNumber;
 	
-	@Column(name="customer_accno")
+	@Column(name="token_acctno")
     private String customerAcctNo;
 	
 	@Column(name="token_status")
     private String tokenStatus;
 	
-	@Column(name="service_Type")
+	@Column(name="token_servicetype")
     private String serviceType;
 	
 	
-	@Column(name="customer_feedback")
+	@Column(name="token_review")
     private String feedback;
 	
 	
 	//private String message;
-
-	public int getTokenId() {
-		return tokenId;
-	}
-
-	public void setTokenId(int tokenId) {
-		this.tokenId = tokenId;
-	}
 
 	public String getTokenNumber() {
 		return tokenNumber;
