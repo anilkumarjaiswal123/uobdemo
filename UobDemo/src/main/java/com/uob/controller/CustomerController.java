@@ -21,7 +21,7 @@ public class CustomerController {
 	
 	@GetMapping("customers")
 	public ResponseEntity<List<Customer>> getAllCustomers() {
-		System.out.println("Hiiiiiiiiiiiiiii");
+		
 		List<Customer> list = customerService.getAllCustomers();
 		return new ResponseEntity<List<Customer>>(list, HttpStatus.OK);
 	}
